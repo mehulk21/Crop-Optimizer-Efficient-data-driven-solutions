@@ -1,5 +1,5 @@
 ## Crop Recommendation System
-Developed by **Mehul** and **Maanas**, this project is designed to bridge the gap between traditional farming methods and modern data-driven agriculture.
+This project by **Mehul** and **Maanas**, is designed to bridge the gap between traditional farming methods and modern data-driven agriculture.
 
 Developed using Python in Jupyter Notebook, implements machine learning algorithms to provide accurate crop recommendations based on environmental and soil conditions. By analyzing various input parameters, the system helps farmers make informed decisions to improve agricultural efficiency and sustainability.
 
