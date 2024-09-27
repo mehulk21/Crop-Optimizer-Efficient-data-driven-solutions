@@ -1,0 +1,31 @@
+// Code used to generate the heatmap
+var dataset = ee.ImageCollection('ESA/WorldCereal/2021/MODELS/v100');
+
+Map.setOptions('SATELLITE');
+
+function mask_other(img) {
+  return img.updateMask(img.neq(0));
+}
+
+dataset = dataset.map(mask_other);
+
+// Crops from our dataset
+var crops = ['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas', 'mothbeans', 'mungbean', 
+             'blackgram', 'lentil', 'pomegranate', 'banana', 'mango', 'grapes', 'watermelon', 
+             'muskmelon', 'apple', 'orange', 'papaya', 'coconut', 'cotton', 'jute', 'coffee'];
+
+// A separate heatmap can be created for each crop
+crops.forEach(function(crop) {
+  var cropData = dataset.filter(ee.Filter.eq('product', crop)).mosaic();
+  
+  var visualization = {
+    bands: ["classification"],
+    max: 100,
+    palette: ["ff0000"]
+  };
+
+  Map.addLayer(cropData, visualization, crop);
+});
+
+
+Map.centerObject(dataset);
