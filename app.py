@@ -1,13 +1,12 @@
-from flask import Flask,request,render_template
+from flask import Flask, request, render_template
 import numpy as np
-import pandas
-import sklearn
 import pickle
+import pyttsx3  # For text-to-speech
 
-model = pickle.load(open('Model.pkl','rb'))
-sc = pickle.load(open('Standard.pkl','rb'))
-mx = pickle.load(open('MinMaxScaler.pkl','rb'))
-
+# Load your pre-trained models and scalers
+model = pickle.load(open('Model.pkl', 'rb'))
+sc = pickle.load(open('Standard.pkl', 'rb'))
+mx = pickle.load(open('MinMaxScaler.pkl', 'rb'))
 
 app = Flask(__name__)
 
@@ -15,7 +14,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/predict",methods=['POST'])
+@app.route("/predict", methods=['POST'])
 def predict():
     N = request.form['Nitrogen']
     P = request.form['Phosporus']
@@ -25,28 +24,39 @@ def predict():
     ph = request.form['pH']
     rainfall = request.form['Rainfall']
 
+    # Prepare the input data
     feature_list = [N, P, K, temp, humidity, ph, rainfall]
     single_pred = np.array(feature_list).reshape(1, -1)
 
-    feature_list = [N, P, K, temp, humidity, ph, rainfall]
-    single_pred = np.array(feature_list).reshape(1, -1)
-
+    # Apply MinMaxScaler and StandardScaler
     mx_features = mx.transform(single_pred)
     sc_mx_features = sc.transform(mx_features)
+
+    # Predict the crop
     prediction = model.predict(sc_mx_features)
 
-    crop_dict = {1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut", 6: "Papaya", 7: "Orange",
-                 8: "Apple", 9: "Muskmelon", 10: "Watermelon", 11: "Grapes", 12: "Mango", 13: "Banana",
-                 14: "Pomegranate", 15: "Lentil", 16: "Blackgram", 17: "Mungbean", 18: "Mothbeans",
-                 19: "Pigeonpeas", 20: "Kidneybeans", 21: "Chickpea", 22: "Coffee"}
+    # Crop dictionary to map prediction to the crop name
+    crop_dict = {
+        1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut",
+        6: "Papaya", 7: "Orange", 8: "Apple", 9: "Muskmelon",
+        10: "Watermelon", 11: "Grapes", 12: "Mango", 13: "Banana",
+        14: "Pomegranate", 15: "Lentil", 16: "Blackgram", 17: "Mungbean",
+        18: "Mothbeans", 19: "Pigeonpeas", 20: "Kidneybeans", 21: "Chickpea", 22: "Coffee"
+    }
 
     if prediction[0] in crop_dict:
         crop = crop_dict[prediction[0]]
-        result = "{} is the best crop to be cultivated right there".format(crop)
+        result = f"{crop} is the best crop to be cultivated right there"
     else:
         result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
-    return render_template('index.html',result = result)
 
+    # Text-to-speech: Reinitialize the pyttsx3 engine each time
+    engine = pyttsx3.init()
+    engine.say(result)
+    engine.runAndWait()
+
+    # Return the result to be displayed on the screen
+    return render_template('index.html', result=result)
 
 if __name__ == "__main__":
     app.run(debug=True)
