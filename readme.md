@@ -13,7 +13,8 @@ We used publicly available datasets from sources like the Department of Agricult
 The system considers various key factors such as soil pH, rainfall levels, average temperature, and humidity to suggest crops that are optimal for the given conditions.
 
 **Impact and Applications**: <br>
-This project can help farmers increase productivity, reduce resource wastage, and support sustainable agriculture by providing data-driven recommendations. It’s also scalable and adaptable to different geographical regions.
+This project can help farmers increase productivity, reduce resource wastage, and support sustainable agriculture by providing data-driven recommendations. It’s also scalable and adaptable to different geographical regions. A detailed view of our dataset can be seen on Google Earth for better understanding. Please click here to have a look:
+https://code.earthengine.google.com/58123d4f3643df7aa5519de33c2b2bea
 
 **Future Improvements**: <br>
 Future plans include integrating more complex climate forecasting models, incorporating real-time weather data, and expanding the recommendation system to a broader range of crops and regions.
