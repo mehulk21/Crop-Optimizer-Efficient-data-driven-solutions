@@ -18,3 +18,9 @@ https://code.earthengine.google.com/58123d4f3643df7aa5519de33c2b2bea
 
 **Future Improvements**: <br>
 Future plans include integrating more complex climate forecasting models, incorporating real-time weather data, and expanding the recommendation system to a broader range of crops and regions.
+
+## Instructions to Run
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mehulk21/Crop-Optimizer-Efficient-data-driven-solutions.git
+
